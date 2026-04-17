@@ -1,0 +1,23 @@
+# Environments
+.env
+.venv/
+env/
+node_modules/
+
+# Compilation Artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# IDEs
+.vscode/
+.idea/
+
+# OS Specific
+.DS_Store
+Thumbs.db
+
+# Datasets (Preventing 100MB+ push limits)
+dataset/
+test_images/500_dataset/
+test_images/2000_dataset/
