@@ -17,7 +17,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 ~$*
-~*.docx
 
 # Datasets (Preventing 100MB+ push limits)
 dataset/
