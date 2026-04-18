@@ -151,6 +151,7 @@ def create_dataloaders(
     dataset_root: str | Path,
     batch_size: int = 32,
     num_workers: int = 0,
+    pin_memory: bool = False,
     mode: str = "finetune",   # "pretrain" or "finetune"
 ) -> tuple[DataLoader, DataLoader]:
     """Create train + val dataloaders."""
@@ -169,7 +170,7 @@ def create_dataloaders(
         batch_size=batch_size,
         sampler=train_ds.get_sampler(),
         num_workers=num_workers,
-        pin_memory=False,
+        pin_memory=pin_memory,
         drop_last=True,
     )
 
@@ -178,7 +179,7 @@ def create_dataloaders(
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
-        pin_memory=False,
+        pin_memory=pin_memory,
     )
 
     return train_loader, val_loader

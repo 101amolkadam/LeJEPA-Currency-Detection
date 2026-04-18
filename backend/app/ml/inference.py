@@ -13,6 +13,7 @@ from PIL import Image
 import numpy as np
 
 from app.config import get_settings
+from app.ml.device import detect_device
 from app.ml.lejepa.encoder import ViTEncoder
 from app.ml.lejepa.model import LeJEPAClassifier, load_checkpoint
 from app.ml.classifier import (
@@ -32,7 +33,7 @@ class InferenceEngine:
 
     def __init__(self):
         self.settings = get_settings()
-        self.device = torch.device(self.settings.DEVICE)
+        self.device = detect_device()
         self.auth_model: LeJEPAClassifier | None = None
         self.denom_model: LeJEPAClassifier | None = None
         self.model_loaded = False

@@ -57,9 +57,13 @@ The backend utilizes `uv` as its lightning-fast dependency manager.
 
 ## Step 4: Training the LeJEPA Model (Manual Override)
 
-As a zero-shot environment, the backend will initially rely solely on standard OpenCV calculations to determine fake currency (Fallback Mode). To active the machine learning sequence, you need to initiate training.
+As a zero-shot environment, the backend will initially rely solely on standard OpenCV calculations to determine fake currency (Fallback Mode). To activate the machine learning sequence, you need to initiate training.
 
-Since you are running this natively, this PyTorch model is configured for **CPU execution** by default (ViT-Tiny). 
+The system features **automatic hardware detection**. It will default to GPU (CUDA) if available, or seamlessly fallback to CPU execution if no supported GPU is found.
+
+> [!TIP]
+> **GPU Acceleration (CUDA)**
+> If you have an NVIDIA GPU, make sure to install PyTorch with CUDA support to drastically speed up training and inference times: `uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121`
 
 ### Launching Training From the Terminal
 

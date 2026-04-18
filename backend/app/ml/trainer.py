@@ -14,6 +14,7 @@ from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from app.config import get_settings
+from app.ml.device import detect_device, get_optimal_workers, get_pin_memory
 from app.ml.lejepa.encoder import ViTEncoder
 from app.ml.lejepa.model import LeJEPAPretrainModel, save_checkpoint, load_checkpoint
 from app.ml.classifier import build_authenticity_classifier, build_denomination_classifier
@@ -27,7 +28,9 @@ class Trainer:
 
     def __init__(self, db_session=None):
         self.settings = get_settings()
-        self.device = torch.device(self.settings.DEVICE)
+        self.device = detect_device()
+        self.num_workers = get_optimal_workers()
+        self.pin_memory = get_pin_memory(self.device)
         self.db_session = db_session
 
     # ──────────────────────────────────────────────────────────
@@ -66,7 +69,8 @@ class Trainer:
         train_loader, _ = create_dataloaders(
             self.settings.dataset_abs_path,
             batch_size=batch_size,
-            num_workers=self.settings.NUM_WORKERS,
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
             mode="pretrain",
         )
 
@@ -166,7 +170,8 @@ class Trainer:
         train_loader, val_loader = create_dataloaders(
             self.settings.dataset_abs_path,
             batch_size=batch_size,
-            num_workers=self.settings.NUM_WORKERS,
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
             mode="finetune",
         )
 

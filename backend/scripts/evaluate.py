@@ -1,4 +1,11 @@
-"""Model evaluation script — run from backend/ directory with: uv run python scripts/evaluate.py"""
+"""Model evaluation script — run from backend/ directory.
+
+Usage:
+    uv run python scripts/evaluate.py                     # evaluate latest model
+    uv run python scripts/evaluate.py --model-path path   # evaluate specific checkpoint
+
+Hardware is auto-detected: GPU (CUDA) preferred, CPU fallback.
+"""
 
 import asyncio
 import argparse
@@ -17,13 +24,14 @@ async def main():
 
     import torch
     from app.config import get_settings
+    from app.ml.device import detect_device
     from app.ml.lejepa.encoder import ViTEncoder
     from app.ml.lejepa.model import load_checkpoint
     from app.ml.classifier import build_authenticity_classifier
     from app.ml.dataset import create_dataloaders
 
     settings = get_settings()
-    device = torch.device(settings.DEVICE)
+    device = detect_device()
 
     # Find model
     model_path = args.model_path
@@ -39,6 +47,7 @@ async def main():
         model_path = str(model_files[0])
 
     print(f"Evaluating: {model_path}")
+    print(f"Device: {device}")
 
     # Build model
     encoder = ViTEncoder(
@@ -57,7 +66,6 @@ async def main():
     _, val_loader = create_dataloaders(
         settings.dataset_abs_path,
         batch_size=args.batch_size,
-        num_workers=settings.NUM_WORKERS,
         mode="finetune",
     )
 

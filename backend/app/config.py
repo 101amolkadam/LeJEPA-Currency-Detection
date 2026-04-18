@@ -42,8 +42,7 @@ class Settings(BaseSettings):
     BATCH_SIZE: int = 32
     LEARNING_RATE: float = 1.5e-4
     FINETUNE_LR: float = 1e-4
-    NUM_WORKERS: int = 0          # 0 for Windows compatibility
-    DEVICE: str = "cpu"
+    # NOTE: DEVICE and NUM_WORKERS are auto-detected by app.ml.device
 
     @property
     def cors_origins_list(self) -> list[str]:
